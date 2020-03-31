@@ -2,7 +2,7 @@ class Solution:
     def search(self, nums: List[int], target: int) -> int:
         # 1. 暴力
 
-        #         # 2. 二分查找，先遍历找到分割点，然后在各自的序列中做二分查找
+        # 2. 二分查找，先遍历找到分割点，然后在各自的序列中做二分查找
         if not nums:
             return -1
         if len(nums) == 1:
