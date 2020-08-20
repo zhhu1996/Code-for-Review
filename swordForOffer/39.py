@@ -2,9 +2,10 @@ class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         """寻找数组中出现次数超过一半的数字
         1. 数组中出现次数超过一半：遍历数组，保存两个变量，一个是被认为出现次数超过一半的数字，一个是该数字出现的次数，
+        要找的数字就是最后一次把次数设置为1对应的数字
         时间复杂度: O(n)
 
-        2.
+        2. 基于partition的排序，找到mid位置的正确元素即可
         """
         # # 方法1
         # if not nums:

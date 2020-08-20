@@ -29,7 +29,7 @@ class Solution:
         if not root:
             return None
         convertNode(root)
-        # 连接头节点和尾节点
+        # 连接整个链表的头节点和尾节点
         headNode = self.lastNode
         while headNode and headNode.left:
             headNode = headNode.left

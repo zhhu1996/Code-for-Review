@@ -7,6 +7,7 @@
 
 class Solution:
     def isSubStructure(self, A: TreeNode, B: TreeNode) -> bool:
+        """前序遍历树A，对于每个节点的值与B进行比较，匹配的话则进行对应子树的递归比较"""
 
         def hasSubTree(node1, node2):
             """node1子树是否包含node2子树"""
