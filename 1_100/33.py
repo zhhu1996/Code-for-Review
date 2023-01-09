@@ -41,3 +41,24 @@ class Solution:
             else:
                 return mid
         return -1
+
+        # 3. 二分查找
+        # left, right = 0, len(nums)-1
+        # while left < right:
+        #     mid = (left + right) // 2
+        #     if nums[mid] < nums[right]: # mid在后半段数组
+        #         # [mid, right]是有序的
+        #         if nums[mid] < target and target <= nums[right]:
+        #             left = mid + 1
+        #         else:
+        #             right = mid
+        #     else: # mid在前半段数组
+        #         # [left, mid]是有序的
+        #         if nums[left] <= target and target <= nums[mid]:
+        #             right = mid
+        #         else:
+        #             left = mid + 1
+        # if nums[left] == target:
+        #     return left 
+        # else:
+        #     return -1

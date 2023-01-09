@@ -1,6 +1,6 @@
 class Solution:
     def threeSumClosest(self, nums: List[int], target: int) -> int:
-        # 双指针法，时间复杂度为O(n2)[-4,-1,1,2]
+        # 双指针法, 时间复杂度为O(n^2)
         nums.sort()
         delta = float('inf')
         for i in range(len(nums)):

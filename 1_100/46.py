@@ -52,6 +52,10 @@ class Solution(object):
         calcPermute(nums, 0, [], check)
         return self.res
 
+        # # 4. 库函数itertools.permutations
+        # from itertools import permutations
+        # return list(permutations(nums, len(nums))) 
+
 
 
 

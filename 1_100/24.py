@@ -6,18 +6,17 @@
 
 class Solution:
     def swapPairs(self, head: ListNode) -> ListNode:
-        #         # 递归
-        #         # head对应当前需要交换的节点
-        #         if not head:
-        #             return None
-        #         if not head.next:
-        #             return head
+        # # 1. 递归, head是当前需要交换的节点, 返回已经交换好的节点
+        # if not head:
+        #     return None
+        # if not head.next:
+        #     return head
 
-        #         p = head.next
-        #         head.next = self.swapPairs(p.next)
-        #         p.next = head
+        # p = head.next
+        # head.next = self.swapPairs(p.next)
+        # p.next = head
 
-        #         return p
+        # return p
 
         # 2. 循环
         if not head:

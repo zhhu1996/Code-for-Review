@@ -42,3 +42,8 @@ class Solution(object):
 
         calcPermute(nums, 0, [], check)
         return self.res
+
+
+q47 = Solution()
+for ll in q47.permuteUnique([1,2,3,4]):
+    print(ll)

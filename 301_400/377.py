@@ -1,10 +1,9 @@
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
         """组合总和IV
-        1. 回溯法，当target很大时，超时
+        1. 回溯法, 当target很大时, 超时
 
-        2. 动态规划，dp[i]表示和为i的组合总数
-        dp[i] = sum(dp[i-j]), i >= j and j属于nums
+        2. 动态规划, dp[i]表示和为i的组合总数, 固定最后一位元素, 则dp[i] = sum(dp[i-j]), i >= j and j属于nums
         """
         # self.result = []
         #

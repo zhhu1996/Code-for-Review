@@ -4,22 +4,44 @@ class Solution:
         self.hashTable = None
 
     def letterCombinations(self, digits: str) -> List[str]:
-        # 1. 回溯法，当到达规定状态时进行操作并返回上层调用
-        if not digits:
-            return []
-        self.hashTable = {
-            '2': 'abc',
-            '3': 'def',
-            '4': 'ghi',
-            '5': 'jkl',
-            '6': 'mno',
-            '7': 'pqrs',
-            '8': 'tuv',
-            '9': 'wxyz'
-        }
-        self.sortStrings(digits, '', 0, len(digits))
+        # # 1. 回溯法, 到达出口时统一存入结果
+        # if not digits:
+        #     return []
+        # self.hashTable = {
+        #     '2': 'abc',
+        #     '3': 'def',
+        #     '4': 'ghi',
+        #     '5': 'jkl',
+        #     '6': 'mno',
+        #     '7': 'pqrs',
+        #     '8': 'tuv',
+        #     '9': 'wxyz'
+        # }
+        # self.sortStrings(digits, '', 0, len(digits))
 
-        return self.result
+        # return self.result
+
+        # 2. 递归
+        def gen_res(digits, cur, ss):
+            """
+            递归求解电话号码组合
+                digits: 剩余需遍历的数组
+                cur: 当前结果
+                ss: 映射表
+            """
+            if not digits:
+                return cur
+            nc = ss[digits[0]]
+            res = []
+            if not cur:
+                res = [c for c in nc]
+            else:
+                for s in cur:
+                    for c in nc:
+                        res.append(s+c)
+            return gen_res(digits[1:], res, ss)
+
+        return gen_res(digits, [], ss)
 
     def sortStrings(self, digits, s, index, maxLength):
         # 递归地对元素进行排列，s表示当前已经排列的字符

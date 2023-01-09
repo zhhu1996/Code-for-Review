@@ -25,7 +25,7 @@ class Solution:
 
         return first.next
 
-        # # 2. 递归
+        # # 2. 递归, l1/l2:待排序列表, 返回已经排好序的列表
         # if not l1 and not l2:
         #     return None
         #

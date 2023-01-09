@@ -1,20 +1,26 @@
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
-        # 1. 回溯法
-        # https://leetcode-cn.com/problems/combinations/solution/hui-su-si-xiang-tuan-mie-pai-lie-zu-he-zi-ji-wen-2/
-        self.result = []
-        self.recur(n, [], k, 1)
-        return self.result
+        # # 1. itertools.combinations
+        # from itertools import combinations
+        # return list(combinations(list(range(1,n+1)), k))
 
-    def recur(self, n, nlist, k, index):
-        # n代表原列表的长度，nlist代表新生成的列表，k表示组合数的个数，index表示当前索引，length表示长度
-        # 每次从[index, n]中挑选一个数进行递归，直到生成列表的长度等于k就返回
-        if len(nlist) == k:
-            self.result.append(nlist.copy())
-            return
+        # 2. 回溯
+        self.res = []
 
-        for i in range(index, n + 1):
-            if i not in nlist:
-                nlist.append(i)
-                self.recur(n, nlist, k, i + 1)
-                nlist.pop()
+        def gen_combinations(n, cur, index, k):
+            """
+                n: 候选列表[1,n]
+                cur: 已生成的列表
+                index: 当前遍历到的索引
+                k: 最大长度
+            """
+            if len(cur) == k:
+                self.res.append(cur.copy())
+                return
+            for i in range(index, n+1):
+                cur.append(i)
+                gen_combinations(n, cur, i+1, k)
+                cur.pop()
+
+        gen_combinations(n, [], 1, k)
+        return self.res
