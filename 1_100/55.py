@@ -1,6 +1,6 @@
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
-        # # 1. 回溯，每到一个节点递归遍历所有的状态，时间复杂度O(2^n)，超时
+        # # 1. 回溯, 每到一个节点递归遍历所有的状态, 时间复杂度O(2^n), 超时
         # self.res = -1
         #
         # def jump(nums, index):
@@ -27,9 +27,13 @@ class Solution:
         #             break
         # return dp[-1]
 
-        # 3. 贪心，时间复杂度O(n)
-        lastPos = len(nums) - 1
-        for j in range(len(nums) - 1, -1, -1):
-            if j + nums[j] >= lastPos:
-                lastPos = j
-        return lastPos == 0
+        # 3. 贪心算法, pos表示最远可达位置处, 实时遍历更新, 最后判断最远可达位置是否大于末位即可, 时间O(n)
+        if len(nums) <= 1: 
+            return True
+        pos = 0
+        for i in range(len(nums)-1):
+            if i <= pos:
+                pos = max(pos, i+nums[i])
+            if pos >= len(nums)-1:
+                return True
+        return False

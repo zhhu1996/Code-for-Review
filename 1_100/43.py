@@ -32,6 +32,16 @@ class Solution:
 
         return ''.join(str(i) for i in res)
 
+        # # 3. 模拟数字乘法
+        # if num1 == '0' or num2 == '0':
+        #     return '0'
+        # res = 0
+        # base = 1
+        # for i in range(len(num2)-1, -1, -1):
+        #     res += int(num1) * int(num2[i]) * base
+        #     base = base * 10
+        # return str(res)
+
     def cal(self, res, temp):
         # 实现两个数组的相加：首先要对齐两个数组，然后逐元素相加
         if len(res) <= len(temp):
