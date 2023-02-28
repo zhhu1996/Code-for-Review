@@ -1,14 +1,10 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        """
-        dp[i]表示nums[:i]可取得的最大收益
-        分两种情况: 
-        i.  首取尾不取
-            相当于丢弃最后一个元素的打家劫舍I
-        ii. 尾取首不取
-            dp[0]限定为0
-        状态转移方程均为
-        dp[i] = max(dp[i-1], dp[i-2]+nums[i])
+        """打家劫舍II
+        单串, 位置i可不取, O(1)个子问题
+        i. 偷窃第一间房子, nums[:-1]的最大收益
+        ii. 不偷窃第一间房子, nums[1:]的最大收益
+        求两者的最大值
         """
         if not nums:
             return 0

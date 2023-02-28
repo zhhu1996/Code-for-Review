@@ -1,91 +1,54 @@
 class NumMatrix:
-    """
-    方法1: 以dp[i][j][p][q]表示起点到终点的区域和，具体区间和用前缀计算，时间复杂度为O(n^4)
+    """二维区域和检索 - 矩阵不可变
+    1. 利用1维前缀和思想, 查询二维区域和需要O(n^2)
 
-    方法2: 每一行计算前缀和，以dp[i][j]表示matrix[i][:j]的和
-    那么(row1,col1)->(row2,col2)的区域和就等于sum(dp[i][col2]-dp[i][col1-1])
-    时间复杂度O(n^2)
+    2. 先求(0,0)到(i,j)的区域和, 再求(row1,col1)到(row2,col2)
+    i. (0,0) -> (i,j)
+    dp[i][j]表示 (0,0) -> (i,j) 的区域和, dp可以建成(m+1)*(n+1)大小
+    dp[i][j] = dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1] + matrix[i][j]
+    ii.(row1,col1) -> (row2,col2)
+    S = dp[row2][col2] + dp[row1-1][col1-1] - dp[row1-1][col2] - dp[row2][col1-1]
     """
-
+    # # 1.
     # def __init__(self, matrix: List[List[int]]):
-    #     self.matrix = matrix
-    #     self.initAns(matrix)
-    #     self.cal2dAns()
-    #     # print(self.ans)
-    #     # print(self.ans)
-    #
-    # def initAns(self, matrix):
-    #     if not matrix:
-    #         return []
-    #     m,n = len(matrix),len(matrix[0])
-    #     self.ans = []
+    #     m, n = len(matrix), len(matrix[0])
+    #     self.csum = [[0 for i in range(n+1)] for j in range(m)]
     #     for i in range(m):
-    #         tempj = []
-    #         for j in range(n):
-    #             tempp = []
-    #             for p in range(m):
-    #                 tempq = [0 for q in range(n)]
-    #                 tempp.append(tempq)
-    #             tempj.append(tempp)
-    #         self.ans.append(tempj)
-    #
-    # def cal2dAns(self):
-    #     if not self.matrix:
-    #         return
-    #     m,n = len(self.matrix), len(self.matrix[0])
-    #     for i in range(m):
-    #         rowSum = [0 for _ in range(n)]
-    #         for j in range(i,m):
-    #             for k in range(n):
-    #                 rowSum[k] += self.matrix[j][k]
-    #             cumSum = self.cal1dAns(rowSum)
-    #             for p in range(n):
-    #                 for q in range(p,n):
-    #                     if p >= 1:
-    #                         self.ans[i][p][j][q] = cumSum[q] - cumSum[p-1]
-    #                     else:
-    #                         self.ans[i][p][j][q] = cumSum[q]
-    #
-    # def cal1dAns(self, array):
-    #     if not array:
-    #         return []
-    #     cur = 0
-    #     n = len(array)
-    #     cumSum = []
-    #     for i in range(n):
-    #         cur += array[i]
-    #         cumSum.append(cur)
-    #     return cumSum
-    #
+    #         for j in range(1,1+n):
+    #             self.csum[i][j] = matrix[i][j-1] + self.csum[i][j-1]
+
     # def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
-    #     return self.ans[row1][col1][row2][col2]
+    #     res = 0
+    #     for row in range(row1, row2+1):
+    #         res += self.csum[row][col2+1] - self.csum[row][col1]
+    #     return res
 
     def __init__(self, matrix: List[List[int]]):
-        if matrix:
-            self.m, self.n = len(matrix), len(matrix[0])
-        else:
-            self.m, self.n = 0, 0
-        self.matrix = matrix
-        self.cumSum = []
-        self.getRowSum()
-
-    def getRowSum(self):
-        for i in range(self.m):
-            cur = 0
-            tmp = []
-            for j in range(self.n):
-                cur += self.matrix[i][j]
-                tmp.append(cur)
-            self.cumSum.append(tmp)
+        m, n = len(matrix), len(matrix[0])
+        # dp[i][j]
+        self.dp = [[0 for i in range(n)] for j in range(m)]
+        self.dp[0][0] = matrix[0][0]
+        for i in range(1,n):
+            self.dp[0][i] = matrix[0][i] + self.dp[0][i-1]
+        for i in range(1, m):
+            self.dp[i][0] = matrix[i][0] + self.dp[i-1][0]
+        for i in range(1,m):
+            for j in range(1,n):
+                self.dp[i][j] = self.dp[i-1][j] + self.dp[i][j-1] - self.dp[i-1][j-1] + matrix[i][j]
 
     def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
-        result = 0
-        for i in range(row1, row2 + 1):
-            if col1 >= 1:
-                result += self.cumSum[i][col2] - self.cumSum[i][col1 - 1]
-            else:
-                result += self.cumSum[i][col2]
-        return result
+        res = 0
+        if row1 == 0 and col1 == 0:
+            res = self.dp[row2][col2]
+        elif row1 == 0:
+            res = self.dp[row2][col2] - self.dp[row2][col1-1]
+        elif col1 == 0:
+            res = self.dp[row2][col2] - self.dp[row1-1][col2]
+        else:
+            res = self.dp[row2][col2] + self.dp[row1-1][col1-1] - self.dp[row1-1][col2] - self.dp[row2][col1-1]
+        return res
+
+
 
 # Your NumMatrix object will be instantiated and called as such:
 # obj = NumMatrix(matrix)

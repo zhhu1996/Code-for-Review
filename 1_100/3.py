@@ -16,20 +16,22 @@ class Solution:
 
         #         return maxCnt
 
-        #         # 2. 滑动窗口法，用set维护[i, j]的元素，用更低的时间复杂度实现查询，时间复杂度O(2*n)，n是字符串最大长度
-        #         data = set()
-        #         i, j, n = 0, 0, len(s)
-        #         res = 0
-        #         while i < n and j < n:
-        #             if s[j] not in data:
-        #                 data.add(s[j])
-        #                 j += 1
-        #                 res = max(j-i, res)
-        #             else:
-        #                 data.remove(s[i])
-        #                 i += 1
-
-        #         return res
+        ## 2. 滑动窗口法，用set维护[i, j]的元素，用更低的时间复杂度实现查询，时间复杂度O(2*n)，n是字符串最大长度
+        # n, l, r = len(s), 0, 0
+        # exists = set()
+        # res = 0
+        # while r < n:
+        #     if s[r] not in exists:
+        #         exists.add(s[r])
+        #         if res < r-l+1:
+        #             res = r-l+1
+        #     else:
+        #         while s[l] != s[r]:
+        #             exists.remove(s[l])
+        #             l += 1
+        #         l += 1
+        #     r += 1
+        # return res
 
         # 3. 优化版本的滑动窗口法，除了维护每个元素是否出现，还保存元素出现的位置，这样在s[j] in set[i, j-1]的时候，跳过出现的位置
         data = {}
