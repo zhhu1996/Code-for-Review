@@ -1,53 +1,38 @@
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         """分割等和子集
-        1. 背包问题，
-        dp[i][j]表示[0，i]的区间内挑选子集是否能得到和为j
-        状态转移方程为
-        dp[i][j] = dp[i-1][j]
-                   | dp[i-1][j-nums[i] if j>nums[i]
-                   | True j == nums[i]
-
-        2. 回溯
-        只要找到一个组合使得组合之和=target即可
+        1. dp
+        0/1背包, dp[i][v]表示前i个元素的和是否能组成v
+        dp[i][v] = dp[i-1][v] or dp[i-1][v-nums[i-1]]
+        => 空间优化
+        dp[v]表示能否组成v
         """
-        # # 方法1
+        # # 1. 二维
         # n = len(nums)
         # total = sum(nums)
-        # if total & 1 == 1:
+        # if total % 2 != 0:
         #     return False
-        # target = total // 2 + 1
-        # dp = [[False]*target for i in range(n)]
-        # if nums[0] <= target:
-        #     dp[0][nums[0]] = True
-        # for i in range(n):
-        #     for j in range(target):
-        #         if j == nums[i]:
-        #             dp[i][j] = True
-        #             continue
-        #         dp[i][j] = dp[i-1][j]
-        #         if j > nums[i]:
-        #             dp[i][j] = dp[i][j] or dp[i-1][j-nums[i]]
-        # return dp[n-1][target-1]
+        # total = total // 2
+        # dp = [[False]*(total+1) for _ in range(n+1)]
+        # dp[0][0] = True
+        # for i in range(1, n+1):
+        #     for v in range(1, total+1):
+        #         dp[i][v] = dp[i-1][v]
+        #         if v >= nums[i-1]:
+        #             dp[i][v] = dp[i][v] or dp[i-1][v-nums[i-1]]
+        # return dp[n][total]
+                
 
-        # 方法2, 超时，待优化
-        self.result = False
-        def getCandidate(array, index, nowSum, target):
-            if nowSum > target:
-                return
-            if nowSum == target:
-                self.result = True
-                return
-            for j in range(index, len(array)):
-                getCandidate(array, j+1, nowSum+array[j], target)
-
-
+        # 1. 空间优化
         n = len(nums)
         total = sum(nums)
-        if total & 1 == 1:
+        if total % 2 != 0:
             return False
-        target = total // 2
-        nums.sort()
-        getCandidate(nums, 0, 0, target)
-        return self.result
-
+        total = total // 2
+        dp = [False]*(total+1)
+        dp[0] = True
+        for i in range(1, n+1):
+            for v in range(total, 0, -1):
+                if v >= nums[i-1]:
+                    dp[v] = dp[v] or dp[v-nums[i-1]]
+        return dp[total]

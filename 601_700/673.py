@@ -1,41 +1,26 @@
 class Solution:
     def findNumberOfLIS(self, nums: List[int]) -> int:
+        """最长递增子序列的个数
+        1. dp
+        带维度单串, 位置i必取, O(n)个子问题
+        dp[i][0]: 以nums[i]结尾LIS长度
+        dp[i][1]: 以nums[i]结尾LIS个数
         """
-        依赖比i小的O(i)个子问题
-        length[i]表示以nums[i]结尾的LIS的长度
-        count[i]表示以nums[i]结尾的LIS的组合数
-
-        length[i]与LIS长度的解题思路相同
-        count[i]的求解方式为
-        在nums[i] > nums[j]的前提下
-        if length[j] + 1 > length[i]，表示遇到新的组合使长度更大，
-            length[i] = length[j]+1
-            count[i] = count[j]
-        elif 相等, 表示并未遇到新组合使长度更大,
-            count[i] += count[j]
-
-        最后统计所有等于最大长度的count
-        """
-        if not nums:
-            return 0
-
         n = len(nums)
-        length = [1] * n
-        count = [1] * n
-        for i in range(n):
+        dp = [[1,1] for _ in range(n)]
+        maxl = 1
+        for i in range(1, n):
             for j in range(i):
                 if nums[i] > nums[j]:
-                    if length[j] + 1 > length[i]:
-                        length[i] = length[j] + 1
-                        count[i] = count[j]
-                    elif length[j] + 1 == length[i]:
-                        count[i] += count[j]
-
-        maxlen = max(length)
-        result = 0
+                    if dp[i][0] < dp[j][0] + 1:
+                        dp[i][0] = dp[j][0] + 1
+                        dp[i][1] = dp[j][1]
+                    elif dp[i][0] == dp[j][0] + 1:
+                        dp[i][1] += dp[j][1]
+            if dp[i][0] > maxl:
+                maxl = dp[i][0]
+        res = 0
         for i in range(n):
-            if length[i] == maxlen:
-                result += count[i]
-        return result
-
-
+            if dp[i][0] == maxl:
+                res += dp[i][1]
+        return res

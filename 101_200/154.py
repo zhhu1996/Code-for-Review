@@ -1,13 +1,18 @@
 class Solution:
     def findMin(self, nums: List[int]) -> int:
-        l, r = 0, len(nums) - 1
-        while l < r:  # 目的是查找first中第一个元素
+        """寻找旋转排序数组中的最小值II
+        1. 二分
+        恢复二段性 + 二分查找
+        """
+        n = len(nums)
+        l, r = 0, n-1
+        while r > l and nums[l] == nums[-1]:
+            l += 1
+        while l <= r:
             mid = (l + r) // 2
-            # mid 在first中
-            if nums[mid] < nums[r]:
-                r = mid
-            elif nums[mid] > nums[r]:  # mid 在second中
+            # f(l-1) > nums[-1], f(r+1) < nums[-1]
+            if nums[mid] > nums[-1]:
                 l = mid + 1
             else:
-                r -= 1
+                r = mid - 1
         return nums[l]

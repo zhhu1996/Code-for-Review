@@ -3,9 +3,9 @@ class Solution:
         """买卖股票的最佳时机
         1. 暴力遍历, 时间复杂度O(n^2), 超时
         
-        2. dp思路1, 时间复杂度O(n^2), 超时
-        dp[i]表示在第i天卖出时的最大利润
-        dp[i] = max(dp[j] + (prices[i]-prices[j])), 0<=j<i
+        2. dp思路1, 时间复杂度O(n)
+        dp[i]: 到第i天时的最大利润
+        dp[i] = max(dp[i-1] + prices[i] - prices[i-1], prices[i] - prices[i-1])
 
         3. dp思路2, 时间复杂度O(n)
         dp[i][s]表示在第i天进行s操作后的最大利润, s=0表示持仓, s=1表示不持仓
@@ -21,10 +21,12 @@ class Solution:
 
         # # 2.
         # n = len(prices)
-        # dp = [0] * n
-        # for i in range(n):
-        #     for j in range(i):
-        #         dp[i] = max(dp[i], dp[j]+prices[i]-prices[j])
+        # if n <= 1: return 0
+        # dp = [0]*n
+        # for i in range(1, n):
+        #     cand1 = dp[i-1] + prices[i] - prices[i-1]
+        #     cand2 = prices[i] - prices[i-1]
+        #     dp[i] = max(cand1, cand2)
         # return max(dp)
 
         # 3.

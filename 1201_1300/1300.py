@@ -1,8 +1,10 @@
 class Solution:
     def findBestValue(self, arr: List[int], target: int) -> int:
-        # 第一个大于等于 target的值
-        arr.sort()
-        left, right = 0, arr[-1]
+        """转变数组后最接近目标值的数组和
+        1. 二分, 时间复杂度O(nlogn)
+        寻找和首次>=target的位置, 返回两边界l-1和l最接近target的
+        """
+        left, right = 0, max(arr)
         while left < right:
             mid = (left + right) // 2
             tarr = [ x if x <= mid else mid for x in arr]

@@ -39,22 +39,25 @@
 #             tail[left] = nums[i]
 #         return len(tail)
 
-        # # 3. O(nlogn)
-        # res = []
-        # for i in range(len(nums)):
-        #     left, right = 0, len(res)-1
+        # # 3. 贪心 + 二分, 时间复杂度O(nlogn)
+        # # dp[i]: 长度为i+1的IS的末尾最小值
+        # n = len(nums)
+        # dp = [nums[0]]
+        # for i in range(1, n):
+        #     l, r = 0, len(dp)-1
         #     target = nums[i]
-        #     while left < right:
-        #         mid = (left + right) // 2
-        #         if res[mid] < target:
-        #             left = mid + 1
+        #     while l <= r:
+        #         mid = (l +  r) // 2
+        #         # f(l-1)<target, f(r+1)>=target
+        #         if dp[mid] < target:
+        #             l = mid + 1
         #         else:
-        #             right = mid
-        #     if left == len(res) or target > res[left]:
-        #         res.append(target)
+        #             r = mid - 1
+        #     if l == len(dp):
+        #         dp.append(nums[i])
         #     else:
-        #         res[left] = target
-        # return len(res)
+        #         dp[l] = nums[i]
+        # return len(dp)
 
 
 class ArrayNode(object):
