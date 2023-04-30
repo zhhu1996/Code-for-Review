@@ -1,7 +1,7 @@
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
         """和为k的子数组
-        1. 前缀和
+        1. 前缀和, 时间复杂度O(n), 空间复杂度O(n)
         用字典存储前缀和, key为前缀和s[i], value为出现次数
         更新前缀和时, 若s[i]-k已存在字典中, 说明找到一组连续区间满足要求
         """

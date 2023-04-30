@@ -1,25 +1,28 @@
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        # 1. 哈希存储，将字母异位词映射到同一位置， 时间复杂度: O(N*K*logK)
-        # dicts = {}
-        # for string in strs:
-        #     temp = ''.join(sorted(string))
-        #     if temp in dicts:
-        #         dicts[temp].append(string)
-        #     else:
-        #         dicts[temp] = [string]
-        # return list(dicts.values())
+        """字母异位词分组
+        1. 哈希
+        哈希函数的选择:
+        1) sort, 时间复杂度O(klogk)
+        2) 统计字母频次, 时间复杂度O(k+26)
+        """
+        ans_map = {}
 
-        # 2. 按照字母计数分类
-        dicts = {}
-        for s in strs:
-            key = [0] * 26
+        def calc_key(s):
+            ans = ''
+            chs = [0]*26
             for c in s:
-                key[ord(c) - ord('a')] += 1
-            if tuple(key) in dicts:
-                dicts[tuple(key)].append(s)
+                pos = ord(c) - ord('a')
+                chs[pos] += 1
+            for i in range(26):
+                if chs[i] > 0:
+                    ans += str(chs[i]) + '_' + chr(i+97) + ','
+            return ans
+        
+        for s in strs:
+            k = calc_key(s)
+            if k in ans_map:
+                ans_map[k].append(s)
             else:
-                dicts[tuple(key)] = [s]
-        return list(dicts.values())
-
-
+                ans_map[k] = [s]
+        return list(ans_map.values())

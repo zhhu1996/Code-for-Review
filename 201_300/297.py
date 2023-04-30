@@ -9,7 +9,7 @@ from queue import Queue
 class Codec:
     """二叉树的序列化与反序列化
     1. BFS
-    2. DFS(前序/后序)
+    2. DFS(前序遍历)
     """
 
     # 1. BFS

@@ -1,55 +1,40 @@
 # Definition for singly-linked list.
 # class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
-
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
-    def deleteDuplicates(self, head: ListNode) -> ListNode:
-        """删除排序链表中的重复元素
-        方法1: 统计每个元素出现的次数，再生成唯一值的链表
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """删除排序链表中的重复元素II
+        1. 递归
+        返回以head为头结点的含重复值的链表, 根据cur与cur.next是否相等分情况讨论
 
-        方法2: 遍历一次链表，删除所有重复元素
+        2. 迭代 + 哈希表, 需要两次遍历链表
+
+        3. 迭代 + 1次遍历链表
         """
-        # # 方法1
-        # numDict = {}
-        # it = head
-        # while it:
-        #     if it.val not in numDict:
-        #         numDict[it.val] = 1
-        #     else:
-        #         numDict[it.val] += 1
-        #     it = it.next
-        # pHead = ListNode(-1)
-        # pHead.next = head
-        # pre = pHead
-        # it = head
-        # while it:
-        #     if numDict[it.val] > 1:
-        #         pre.next = it.next
-        #         it = it.next
-        #     else:
-        #         pre = it
-        #         it = it.next
-        # return pHead.next
+        # # 1.
+        # if not head or not head.next:
+        #     return head
+        # if head.val != head.next.val:
+        #     head.next = self.deleteDuplicates(head.next)
+        #     return head
+        # else:
+        #     move = head.next
+        #     while move and move.val == head.val:
+        #         move = move.next
+        #     return self.deleteDuplicates(move)
 
-        # 方法2
-        pHead = ListNode(-1)
-        pHead.next = head
-        pre = pHead
-        it = head
-        post = it
-        while it:
-            while post and post.val == it.val:
-                post = post.next
-            if not post:
-                pre.next = None
-            elif post == it:
-                pre = post
-                it = it.next
-                post = it
+
+        # 3.
+        dummy = ListNode(-1, head)
+        pre, cur = dummy, head
+        while cur:
+            while cur.next and cur.val == cur.next.val:
+                cur = cur.next
+            if pre.next == cur:
+                pre = cur
             else:
-                pre.next = post.next
-                it = post.next
-                post = it
-        return pHead.next
+                pre.next = cur.next
+            cur = cur.next
+        return dummy.next

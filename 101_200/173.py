@@ -6,30 +6,33 @@
 #         self.right = right
 class BSTIterator:
     """二叉搜索树迭代器
-    1. 一次性生成中序遍历的列表，后用索引遍历
+    1. 预处理, 时间复杂度O(n), 空间复杂度O(n)
+    预处理生成递增序列, 再依据当前指针取值
 
-    2. 用堆栈模拟生成中序列表
+    2. 转换成有序链表, 时间复杂度O(n), 不需要额外空间
     """
-
-    def __init__(self, root: TreeNode):
-        self.stack = []
-        self.root = root
-
+    def __init__(self, root: Optional[TreeNode]):
+        self.dummy = TreeNode(-1)
+        self.pre = self.dummy
+        self.cur = self.dummy
+        self.to_list(root)
 
     def next(self) -> int:
-        while self.root:
-            self.stack.append(self.root)
-            self.root = self.root.left
-        self.root = self.stack.pop()
-        result = self.root.val
-        self.root = self.root.right
-        return result
+        if not self.hasNext():
+            return -1
+        self.cur = self.cur.right
+        return self.cur.val
 
     def hasNext(self) -> bool:
-        if not self.root and not self.stack:
-            return False
-        return True
+        return self.cur is not None and self.cur.right is not None
 
+    def to_list(self, root):
+        if not root: return
+        self.to_list(root.left)
+        self.pre.right = root
+        root.left = self.pre
+        self.pre = root
+        self.to_list(root.right)
 
 
 # Your BSTIterator object will be instantiated and called as such:
