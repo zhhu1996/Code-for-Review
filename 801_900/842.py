@@ -1,25 +1,24 @@
 class Solution:
-    def splitIntoFibonacci(self, S: str) -> List[int]:
-        """将数组拆分成斐波那契数列
-        1. 回溯法
-        对于当前的索引index，如果result的元素个数小于3个，则直接添加；
-        否则要判断当前的元素是否等于前两个元素之和
+    def splitIntoFibonacci(self, num: str) -> List[int]:
+        """将数组拆分成斐波那契序列
+        1. 回溯 + 剪枝, 时间复杂度O(n*logC*logC), C=2**31
         """
-        self.result = []
-
-        def dfs(s, index, cur):
-            if index == len(s):
-                if len(cur) >= 3:
-                    self.result = cur.copy()
+        def gen_cand(index, path):
+            if index == len(num):
+                if len(path) >= 3:
+                    self.ans = path.copy()
                 return
-            for j in range(index, len(s)):
-                if s[index] == "0" and j > index:
-                    break
-                number = int(s[index: j + 1])
-                if len(cur) < 2 or (number == cur[-1] + cur[-2] and number <= 2**31-1):
-                    cur.append(number)
-                    dfs(s, j+1, cur)
-                    cur.pop()
-
-        dfs(S, 0, [])
-        return self.result
+            for i in range(index, len(num)):
+                if int(num[index: i+1]) >= 2**31:
+                    return
+                if num[index] == '0' and i > index:
+                    return
+                if len(path) >= 2 and int(num[index: i+1]) != path[-1] + path[-2]:
+                    continue
+                path.append(int(num[index: i+1]))
+                gen_cand(i+1, path)
+                path.pop()
+        
+        self.ans = []
+        gen_cand(0, [])
+        return self.ans
